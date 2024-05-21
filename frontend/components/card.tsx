@@ -27,6 +27,9 @@ const Quote = ({ quote, isInProfile, isMyProfile, refetch }: any) => {
   const [likes, setLikes] = useState<number>(quote.like?.length ?? 0);
   const [dislikes, setDislikes] = useState<number>(quote.dislike?.length ?? 0);
 
+  const [likeId, setLikeId] = useState<number | undefined>(undefined);
+  const [dislikeId, setDislikeId] = useState<number | undefined>(undefined);
+
   useEffect(() => {
     setLikes(quote.like?.length ?? 0);
     setDislikes(quote.dislike?.length ?? 0);
@@ -68,12 +71,20 @@ const Quote = ({ quote, isInProfile, isMyProfile, refetch }: any) => {
               <Like
                 likeStatus={likeStatus}
                 setLikeStatus={setLikeStatus}
-                quoteId={quote?.id}
+                quoteId={quote.id}
+                likeId={likeId}
+                setLikeId={setLikeId}
+                dislikeId={dislikeId}
+                setDislikeId={setDislikeId}
               />
               <Dislike
                 likeStatus={likeStatus}
                 setLikeStatus={setLikeStatus}
-                quoteId={quote?.id}
+                quoteId={quote.id}
+                likeId={likeId}
+                setLikeId={setLikeId}
+                dislikeId={dislikeId}
+                setDislikeId={setDislikeId}
               />
             </div>
           </CardHeader>
