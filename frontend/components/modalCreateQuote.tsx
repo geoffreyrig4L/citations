@@ -58,7 +58,7 @@ const CreateQuote = ({ status, session, refetch }: any) => {
         variant="bordered"
         onPress={onOpen}
       >
-        Créer un citation
+        Créer une citation
       </Button>
       <Modal
         backdrop={"blur"}

@@ -1,9 +1,9 @@
 "use client";
 import Quote from "@/components/card";
-import { useQuery } from "@tanstack/react-query";
-import { Button, Select, SelectItem, Spinner } from "@nextui-org/react";
-import { useSession } from "next-auth/react";
 import CreateQuote from "@/components/modalCreateQuote";
+import { Select, SelectItem, Spinner } from "@nextui-org/react";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 export default function Home() {
@@ -48,19 +48,19 @@ export default function Home() {
         <div className="flex items-center gap-4">
           <h4 className="font-bold">Trier par : </h4>
           <Select
-            className="w-[9rem]"
+            className="w-[14rem]"
             defaultSelectedKeys={"all"}
             size="sm"
             onChange={(e) => setFilter(e.target.value)}
           >
             <SelectItem key={"date"} value={"date"}>
-              date
+              Les plus récentes
             </SelectItem>
             <SelectItem key={"like"} value={"like"}>
-              les plus populaire
+              les plus Like
             </SelectItem>
             <SelectItem key={"disLike"} value={"disLike"}>
-              les moins popuaire
+              les plus Dislike
             </SelectItem>
           </Select>
         </div>
