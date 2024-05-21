@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 const app = express();
 const port = 3030;
 
@@ -9,7 +10,7 @@ import likes from "./routes/likes.js";
 import dislikes from "./routes/dislikes.js";
 
 app.use(cors({ origin: "*" }));
-
+app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/quote", quotes);

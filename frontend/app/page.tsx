@@ -4,15 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 import { Button, Select, SelectItem, Spinner } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import CreateQuote from "@/components/modalCreateQuote";
+import { useState } from "react";
 
 export default function Home() {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
+  const [filter, setFilter] = useState("date");
 
-  const { isPending, isError, data, error } = useQuery({
-    queryKey: ["quotes"],
+  const { isPending, isError, data, error, refetch } = useQuery({
+    queryKey: ["quotes", filter],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/quote/all`
+        `${process.env.NEXT_PUBLIC_API_URL}/quote/all?sortBy=${filter}`
       );
 
       if (!response.ok) {
@@ -45,20 +47,25 @@ export default function Home() {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
           <h4 className="font-bold">Trier par : </h4>
-          <Select className="w-[9rem]" defaultSelectedKeys={"all"} size="sm">
+          <Select
+            className="w-[9rem]"
+            defaultSelectedKeys={"all"}
+            size="sm"
+            onChange={(e) => setFilter(e.target.value)}
+          >
             <SelectItem key={"date"} value={"date"}>
               date
             </SelectItem>
             <SelectItem key={"like"} value={"like"}>
-              les plus liké
+              les plus populaire
             </SelectItem>
             <SelectItem key={"disLike"} value={"disLike"}>
-              les moins liké
+              les moins popuaire
             </SelectItem>
           </Select>
         </div>
         <div>
-          <CreateQuote status={status} />
+          <CreateQuote refetch={refetch} session={session} status={status} />
         </div>
       </div>
 
