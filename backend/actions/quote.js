@@ -2,6 +2,9 @@ import prisma from "../prisma/prisma.js";
 
 export const getAllQuote = async () => {
   const quotes = await prisma.quote.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
     include: { dislike: true, like: true, user: true },
   });
 
