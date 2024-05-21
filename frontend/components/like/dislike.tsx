@@ -3,17 +3,28 @@
 import { Button } from "@nextui-org/react";
 import { DateTime } from "luxon";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import { BiDislike } from "react-icons/bi";
 import { LikeStatus } from "../card";
-import { set } from "react-hook-form";
 
-const Dislike = ({ likeStatus, setLikeStatus, quoteId }: any) => {
-  const [dislikeId, setDislikeId] = useState<number | undefined>(undefined);
+const Dislike = ({
+  likeStatus,
+  setLikeStatus,
+  quoteId,
+  likeId,
+  setLikeId,
+  dislikeId,
+  setDislikeId,
+}: any) => {
   const { data: session } = useSession();
 
   function postOrDeleteDislike() {
     if (likeStatus === LikeStatus.Disliked) {
+      if (likeId !== undefined) {
+        setLikeId(undefined);
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/like/${likeId}`, {
+          method: "DELETE",
+        });
+      }
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/dislike/${quoteId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -33,6 +44,7 @@ const Dislike = ({ likeStatus, setLikeStatus, quoteId }: any) => {
         .then((data) => setDislikeId(data.id))
         .catch((error) => console.error("Error:", error));
     } else {
+      setDislikeId(undefined);
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/dislike/${dislikeId}`, {
         method: "DELETE",
       });
