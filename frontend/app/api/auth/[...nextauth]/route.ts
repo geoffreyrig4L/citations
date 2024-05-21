@@ -46,10 +46,12 @@ export const authConfig: NextAuthOptions = {
           const data = await login(credentials);
 
           const id = data.id;
+          const username = data.username;
 
           return {
             name: data.name,
             id,
+            username,
           };
         } catch (e: any) {
           if (e.message.match("fetch failed")) {
@@ -65,6 +67,7 @@ export const authConfig: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.username = user.username;
       }
 
       return token;
@@ -72,6 +75,7 @@ export const authConfig: NextAuthOptions = {
     async session({ session, token }) {
       if (token && session.user) {
         session.id = token.id;
+        session.username = token.username;
       }
 
       return session;

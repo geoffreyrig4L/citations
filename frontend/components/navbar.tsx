@@ -20,9 +20,11 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export const Navbar = () => {
   const { data: session, status: status } = useSession();
+  const router = useRouter();
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -52,14 +54,19 @@ export const Navbar = () => {
                     </div>
                   </DropdownTrigger>
                   <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem key="profile">Profile</DropdownItem>
+                    <DropdownItem
+                      key="profile"
+                      onClick={() =>
+                        router.push(`/profile/@${session?.username || ""}`)
+                      }
+                    >
+                      Profile
+                    </DropdownItem>
                     <DropdownItem
                       key="logout"
                       className="text-danger"
                       color="danger"
-                      onClick={async () =>
-                        await signOut({ callbackUrl: "/login" })
-                      }
+                      onClick={async () => await signOut({ callbackUrl: "/" })}
                     >
                       Déconnexion
                     </DropdownItem>

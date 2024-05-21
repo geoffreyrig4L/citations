@@ -28,9 +28,11 @@ export default function Home() {
 
   if (isPending) {
     return (
-      <span>
-        <Spinner size="lg" />
-      </span>
+      <div className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+        <span>
+          <Spinner size="lg" />
+        </span>
+      </div>
     );
   }
 

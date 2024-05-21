@@ -1,6 +1,6 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Quotetier",
+  name: "QuoteTier",
   description: "A social media platform for sharing quotes.",
 };

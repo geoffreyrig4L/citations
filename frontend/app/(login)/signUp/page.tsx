@@ -10,9 +10,10 @@ import Link from "next/link";
 
 type Forms = {
   username: string;
+  name: string;
 };
 
-const signUp = async (username: string) => {
+const signUp = async (userInfo: Forms) => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
     {
@@ -21,7 +22,8 @@ const signUp = async (username: string) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: username,
+        username: userInfo.username,
+        name: userInfo.name,
       }),
     }
   );
@@ -41,7 +43,7 @@ const SignUpPage = () => {
   const [isError, setIsError] = useState(false);
 
   const onSubmit: SubmitHandler<Forms> = (data) =>
-    signUp(data.username)
+    signUp(data)
       .then(() => {
         setIsError(false);
         signIn("credentials", {
@@ -73,6 +75,11 @@ const SignUpPage = () => {
               label="username"
               type="text"
               {...register("username", { required: true })}
+            />
+            <Input
+              label="name"
+              type="text"
+              {...register("name", { required: true })}
             />
             {isError && (
               <p className="text-danger font-thin">
