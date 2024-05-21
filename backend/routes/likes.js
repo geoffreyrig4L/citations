@@ -5,7 +5,6 @@ const router = express.Router();
 router.post("/:quoteId", async (req, res) => {
   try {
     const like = await createLike(req.body, Number(req.params.quoteId));
-    console.log(req.body);
     res.status(200).send(like);
   } catch (error) {
     res.status(400).send(error.message);

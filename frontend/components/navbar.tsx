@@ -60,7 +60,7 @@ export const Navbar = () => {
                         router.push(`/profile/@${session?.username || ""}`)
                       }
                     >
-                      Profile
+                      Profil
                     </DropdownItem>
                     <DropdownItem
                       key="logout"

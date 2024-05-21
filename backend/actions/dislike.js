@@ -1,7 +1,9 @@
 import prisma from "../prisma/prisma.js";
 
 export const createDislike = async (dislike) => {
-  console.log(dislike);
+  // await prisma.like.deleteMany({
+  //   where: { userId: dislike.userId, quoteId: dislike.quoteId },
+  // });
   return await prisma.dislike.create({ data: dislike });
 };
 

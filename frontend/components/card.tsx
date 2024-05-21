@@ -1,20 +1,13 @@
 "use client";
 
-import {
-  Avatar,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-} from "@nextui-org/react";
+import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import Dislike from "./like/dislike";
 import Like from "./like/like";
-import { title } from "./primitives";
-import Link from "next/link";
-import UpdateQuote from "./modalUpdateQuote";
 import MiniProfile from "./miniProfile";
+import UpdateQuote from "./modalUpdateQuote";
+import { title } from "./primitives";
 
 export enum LikeStatus {
   Liked = "LIKED",
@@ -26,9 +19,6 @@ const Quote = ({ quote, isInProfile, isMyProfile, refetch }: any) => {
   const [likeStatus, setLikeStatus] = useState<LikeStatus>(LikeStatus.Default);
   const [likes, setLikes] = useState<number>(quote.like?.length ?? 0);
   const [dislikes, setDislikes] = useState<number>(quote.dislike?.length ?? 0);
-
-  const [likeId, setLikeId] = useState<number | undefined>(undefined);
-  const [dislikeId, setDislikeId] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     setLikes(quote.like?.length ?? 0);
@@ -47,20 +37,6 @@ const Quote = ({ quote, isInProfile, isMyProfile, refetch }: any) => {
         {!isInProfile ? (
           <CardHeader className="justify-between">
             <div className="flex gap-5">
-              {/* <div className="flex gap-3 items-center justify-center">
-                <Avatar name={quote?.user?.name || ""} />
-                <div className="flex flex-col gap-1">
-                  <p className="text-small font-semibold leading-none text-default-600">
-                    {quote?.user?.name}
-                  </p>
-                  <Link
-                    className="text-small text-default-500"
-                    href={`/profile/@${quote?.user?.username}`}
-                  >
-                    @{quote?.user?.username}
-                  </Link>
-                </div>
-              </div> */}
               <MiniProfile
                 isVerified={quote?.user?.approved?.length}
                 name={quote?.user?.name}
@@ -71,20 +47,12 @@ const Quote = ({ quote, isInProfile, isMyProfile, refetch }: any) => {
               <Like
                 likeStatus={likeStatus}
                 setLikeStatus={setLikeStatus}
-                quoteId={quote.id}
-                likeId={likeId}
-                setLikeId={setLikeId}
-                dislikeId={dislikeId}
-                setDislikeId={setDislikeId}
+                quote={quote}
               />
               <Dislike
                 likeStatus={likeStatus}
                 setLikeStatus={setLikeStatus}
-                quoteId={quote.id}
-                likeId={likeId}
-                setLikeId={setLikeId}
-                dislikeId={dislikeId}
-                setDislikeId={setDislikeId}
+                quote={quote}
               />
             </div>
           </CardHeader>

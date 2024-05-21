@@ -1,12 +1,5 @@
 "use client";
-import {
-  Avatar,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-} from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Divider } from "@nextui-org/react";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import Quote from "./card";
@@ -59,13 +52,6 @@ const Profile = ({ username }: { username: string }) => {
       refetch();
     });
   };
-
-  console.log(
-    session?.id,
-    data?.approved?.find(
-      (elm: { approvedById: any }) => elm.approvedById == session?.id
-    )
-  );
 
   return (
     <Card>

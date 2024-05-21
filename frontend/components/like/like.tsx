@@ -3,34 +3,22 @@
 import { Button } from "@nextui-org/react";
 import { DateTime } from "luxon";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { BiLike } from "react-icons/bi";
 import { LikeStatus } from "../card";
 
-const Like = ({
-  likeStatus,
-  setLikeStatus,
-  quoteId,
-  dislikeId,
-  setDislikeId,
-  likeId,
-  setLikeId,
-}: any) => {
+const Like = ({ likeStatus, setLikeStatus, quote }: any) => {
   const { data: session } = useSession();
+  const [likeId, setLikeId] = useState<number | undefined>(undefined);
 
   function postOrDeleteLike() {
     if (likeStatus === LikeStatus.Liked) {
-      if (dislikeId !== undefined) {
-        setDislikeId(undefined);
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/dislike/${dislikeId}`, {
-          method: "DELETE",
-        });
-      }
-      fetch(`${process.env.NEXT_PUBLIC_API_URL}/like/${quoteId}`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/like/${quote.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: session?.id,
-          quoteId: quoteId,
+          quoteId: quote.id,
           createdAt: DateTime.now(),
         }),
       })
@@ -38,17 +26,23 @@ const Like = ({
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
-
           return response.json();
         })
         .then((data) => setLikeId(data.id))
         .catch((error) => console.error("Error:", error));
     } else {
-      setLikeId(undefined);
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/like/${likeId}`, {
         method: "DELETE",
       });
     }
+  }
+
+  const defaultValue = quote.like.some(
+    (like: any) => like.userId === session?.id
+  );
+
+  if (defaultValue) {
+    setLikeStatus(LikeStatus.Liked);
   }
 
   return (
@@ -58,11 +52,11 @@ const Like = ({
       size="sm"
       variant={likeStatus === LikeStatus.Liked ? "solid" : "light"}
       onClick={postOrDeleteLike}
-      onPress={() =>
+      onPress={() => {
         likeStatus === LikeStatus.Liked
           ? setLikeStatus(LikeStatus.Default)
-          : setLikeStatus(LikeStatus.Liked)
-      }
+          : setLikeStatus(LikeStatus.Liked);
+      }}
     >
       <BiLike className="text-xl" />
     </Button>
