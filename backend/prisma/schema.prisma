@@ -21,13 +21,15 @@ model Quote {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique
-  quotes    Quote[]
-  like      Like[]    @relation("LikeToUser")   
-  dislike   Dislike[] @relation("DislikeToUser")   
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt @default(now())
+  id            Int       @id @default(autoincrement())
+  name          String    @unique
+  quotes        Quote[]
+  like          Like[]    @relation("LikeToUser")   
+  dislike       Dislike[] @relation("DislikeToUser")  
+  approvement   Approved[] @relation("approvementByUser")
+  approved      Approved[] @relation("approvedToUser")    
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt @default(now())
 }
 
 model Like {
@@ -48,4 +50,14 @@ model Dislike {
   quote     Quote     @relation("DislikeToQuote", fields: [quoteId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt @default(now())
+}
+
+model Approved {
+  id              Int       @id @default(autoincrement())
+  userId          Int
+  approvedById    Int
+  user            User     @relation("approvedToUser", fields: [userId], references: [id])
+  approvedBy      User     @relation("approvementByUser", fields: [approvedById], references: [id])
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt @default(now())
 }

@@ -1,10 +1,15 @@
 import prisma from "../prisma/prisma.js";
 
-export const getAllQuote = async () => {
+export const getAllQuote = async (sortBy) => {
+  const orderBy =
+    sortBy == "like"
+      ? { like: { _count: "desc" } }
+      : sortBy == "disLike"
+      ? { dislike: { _count: "desc" } }
+      : { createdAt: "desc" };
+
   const quotes = await prisma.quote.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: { ...orderBy },
     include: { dislike: true, like: true, user: true },
   });
 
