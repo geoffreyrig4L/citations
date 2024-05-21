@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 
 async function main() {
   for (let i = 0; i < 20; i++) {
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name: faker.person.fullName(),
         quotes: {
@@ -14,8 +14,11 @@ async function main() {
         },
       },
     });
+  }
 
-    const quote = await prisma.quote.findFirst();
+  for (let i = 0; i < 200; i++) {
+    const quote = await getRandomQuote();
+    const user = await getRandomUser();
 
     await prisma.like.create({
       data: {
@@ -23,6 +26,11 @@ async function main() {
         quoteId: quote.id,
       },
     });
+  }
+
+  for (let i = 0; i < 200; i++) {
+    const quote = await getRandomQuote();
+    const user = await getRandomUser();
 
     await prisma.dislike.create({
       data: {
@@ -31,6 +39,24 @@ async function main() {
       },
     });
   }
+}
+
+async function getRandomQuote() {
+  const totalQuotes = await prisma.quote.count();
+  const randomOffset = Math.floor(Math.random() * totalQuotes);
+  const randomQuote = await prisma.quote.findFirst({
+    skip: randomOffset,
+  });
+  return randomQuote;
+}
+
+async function getRandomUser() {
+  const totalUsers = await prisma.user.count();
+  const randomOffset = Math.floor(Math.random() * totalUsers);
+  const randomUser = await prisma.user.findFirst({
+    skip: randomOffset,
+  });
+  return randomUser;
 }
 
 main()
