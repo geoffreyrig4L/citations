@@ -1,28 +1,58 @@
 import express from "express";
-import { getAllQuote } from "../actions/quote.js";
+import {
+  createQuote,
+  deleteQuote,
+  getAllQuote,
+  getQuote,
+  updateQuote,
+} from "../actions/quote.js";
 const router = express.Router();
 
 // quotes
 
 router.get("/all", async (req, res) => {
-  const quotes = await getAllQuote();
-  res.status(200).send(quotes);
+  try {
+    const quote = await getAllQuote();
+    res.status(200).send(quote);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 });
 
-router.get("/:idQuote", (req, res) => {
-  res.send("get one quote");
+router.get("/:idQuote", async (req, res) => {
+  try {
+    const quote = await getQuote(Number(req.params.idQuote));
+    res.status(200).send(quote);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 });
 
-router.post("/", (req, res) => {
-  res.send("post quote");
+router.post("/", async (req, res) => {
+  try {
+    const quote = await createQuote(req.body);
+    res.status(200).send(quote);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 });
 
-router.patch("/:idQuote", (req, res) => {
-  res.send("update quote");
+router.patch("/:idQuote", async (req, res) => {
+  try {
+    const quote = await updateQuote(Number(req.params.idQuote), req.body);
+    res.status(200).send(quote);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 });
 
-router.delete("/:idQuote", (req, res) => {
-  res.send("delete quote");
+router.delete("/:idQuote", async (req, res) => {
+  try {
+    await deleteQuote(Number(req.params.idQuote));
+    res.status(200).send(`Quote number: ${req.params.idQuote} as been deleted`);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 });
 
 export default router;
