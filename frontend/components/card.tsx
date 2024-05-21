@@ -1,25 +1,33 @@
 "use client";
+
+import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/react";
 import { DateTime } from "luxon";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-} from "@nextui-org/react";
-import { useState } from "react";
-import { FcLikePlaceholder } from "react-icons/fc";
-import { RiDislikeLine } from "react-icons/ri";
+import { useEffect, useState } from "react";
+import Dislike from "./like/dislike";
+import Like from "./like/like";
 import { title } from "./primitives";
 
-const Quote = ({ quote }: any) => {
-  enum LikeStatus {
-    Liked = "LIKED",
-    Disliked = "DISLIKED",
-    Default = "NEUTRAL",
-  }
+export enum LikeStatus {
+  Liked = "LIKED",
+  Disliked = "DISLIKED",
+  Default = "NEUTRAL",
+}
 
-  const [like, setLike] = useState<LikeStatus>(LikeStatus.Default);
+const Quote = ({ quote }: any) => {
+  const [likeStatus, setLikeStatus] = useState<LikeStatus>(LikeStatus.Default);
+  const [likes, setLikes] = useState<number>(quote.like?.length ?? 0);
+  const [dislikes, setDislikes] = useState<number>(quote.dislike?.length ?? 0);
+
+  useEffect(() => {
+    setLikes(quote.like?.length ?? 0);
+    setDislikes(quote.dislike?.length ?? 0);
+    if (likeStatus === LikeStatus.Liked) {
+      setLikes(likes + 1);
+    }
+    if (likeStatus === LikeStatus.Disliked) {
+      setDislikes(dislikes + 1);
+    }
+  }, [likeStatus]);
 
   return (
     <div>
@@ -33,34 +41,16 @@ const Quote = ({ quote }: any) => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              color="danger"
-              radius="full"
-              size="sm"
-              startContent={false}
-              variant={like === LikeStatus.Liked ? "solid" : "light"}
-              onPress={() =>
-                like === LikeStatus.Liked
-                  ? setLike(LikeStatus.Default)
-                  : setLike(LikeStatus.Liked)
-              }
-            >
-              <FcLikePlaceholder className="text-xl" />
-            </Button>
-            <Button
-              color="default"
-              radius="full"
-              size="sm"
-              startContent={false}
-              variant={like === LikeStatus.Disliked ? "solid" : "light"}
-              onPress={() =>
-                like === LikeStatus.Disliked
-                  ? setLike(LikeStatus.Default)
-                  : setLike(LikeStatus.Disliked)
-              }
-            >
-              <RiDislikeLine className="text-xl" />
-            </Button>
+            <Like
+              likeStatus={likeStatus}
+              setLikeStatus={setLikeStatus}
+              quoteId={quote.id}
+            />
+            <Dislike
+              likeStatus={likeStatus}
+              setLikeStatus={setLikeStatus}
+              quoteId={quote.id}
+            />
           </div>
         </CardHeader>
         <CardBody className="px-3 py-0 text-small flex flex-row items-center space-x-3">
@@ -74,15 +64,11 @@ const Quote = ({ quote }: any) => {
         <CardFooter className="gap-3 flex justify-between">
           <div className="flex gap-3">
             <div className="flex gap-1">
-              <p className="font-semibold text-small">
-                {quote.like?.length ?? 0}
-              </p>
+              <p className="font-semibold text-small">{likes}</p>
               <p className=" text-small">Like</p>
             </div>
             <div className="flex gap-1">
-              <p className="font-semibold text-small">
-                {quote.dislike?.length ?? 0}
-              </p>
+              <p className="font-semibold text-small">{dislikes}</p>
               <p className="text-small">Dislike</p>
             </div>
           </div>
