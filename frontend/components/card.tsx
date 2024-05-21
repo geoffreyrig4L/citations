@@ -1,4 +1,5 @@
 "use client";
+import { DateTime } from "luxon";
 import {
   Button,
   Card,
@@ -20,8 +21,6 @@ const Quote = ({ quote }: any) => {
 
   const [like, setLike] = useState<LikeStatus>(LikeStatus.Default);
 
-  console.log(quote);
-
   return (
     <div>
       <Card className="w-full">
@@ -29,11 +28,8 @@ const Quote = ({ quote }: any) => {
           <div className="flex gap-5">
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4 className="text-small font-semibold leading-none text-default-600">
-                {quote.author}
+                {quote.user.name}
               </h4>
-              <h5 className="text-small tracking-tight text-default-400">
-                posté par {quote.user.name}
-              </h5>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -67,10 +63,13 @@ const Quote = ({ quote }: any) => {
             </Button>
           </div>
         </CardHeader>
-        <CardBody className="px-3 py-0 text-small">
+        <CardBody className="px-3 py-0 text-small flex flex-row items-center space-x-3">
           <h4 className={title({ color: "violet", size: "xs" })}>
             {quote.quote}
           </h4>
+          <span className="text-small tracking-tight text-default-400 italic">
+            - {quote.author}
+          </span>
         </CardBody>
         <CardFooter className="gap-3 flex justify-between">
           <div className="flex gap-3">
@@ -89,7 +88,7 @@ const Quote = ({ quote }: any) => {
           </div>
           <div className="flex gap-1">
             <p className="text-small tracking-tight text-default-400 ">
-              {quote.createdAt}
+              {DateTime.fromISO(quote.createdAt).toFormat("dd/MM/yyyy à HH:mm")}
             </p>
           </div>
         </CardFooter>

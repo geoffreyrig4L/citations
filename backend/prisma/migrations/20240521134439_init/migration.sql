@@ -1,13 +1,14 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "Quote" (
+    "id" SERIAL NOT NULL,
+    "quote" VARCHAR(255) NOT NULL,
+    "author" VARCHAR(255) NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-  - You are about to drop the column `disLike` on the `Quote` table. All the data in the column will be lost.
-  - You are about to drop the column `like` on the `Quote` table. All the data in the column will be lost.
-
-*/
--- AlterTable
-ALTER TABLE "Quote" DROP COLUMN "disLike",
-DROP COLUMN "like";
+    CONSTRAINT "Quote_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -43,6 +44,9 @@ CREATE TABLE "Dislike" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
+
+-- AddForeignKey
+ALTER TABLE "Quote" ADD CONSTRAINT "Quote_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Like" ADD CONSTRAINT "Like_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
