@@ -2,10 +2,10 @@
 import { Button } from "@nextui-org/button";
 import { Card, CardBody } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
-import { Link } from "@nextui-org/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Forms = {
   username: string;
@@ -46,7 +46,7 @@ const SignInPage = () => {
               {" "}
               Connexion !{" "}
             </Button>
-            <Link color="foreground" href="#" underline="always">
+            <Link className="underline" href="signUp">
               Pas encore de compte ?{" "}
             </Link>
           </form>

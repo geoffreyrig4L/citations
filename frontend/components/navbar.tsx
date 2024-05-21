@@ -19,10 +19,10 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 export const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status: status } = useSession();
 
   console.log(session);
 
@@ -43,31 +43,41 @@ export const Navbar = () => {
         </NavbarItem>
         <Divider orientation="vertical" />
         <NavbarItem>
-          {session ? (
-            <Dropdown>
-              <DropdownTrigger>
-                <Avatar
-                  className="cursor-pointer"
-                  name={session.user?.name || ""}
-                />
-              </DropdownTrigger>
-              <DropdownMenu aria-label="Static Actions">
-                <DropdownItem key="new">New file</DropdownItem>
-                <DropdownItem key="copy">Copy link</DropdownItem>
-                <DropdownItem key="edit">Edit file</DropdownItem>
-                <DropdownItem
-                  key="delete"
-                  className="text-danger"
-                  color="danger"
+          {status != "loading" && (
+            <div>
+              {session ? (
+                <Dropdown>
+                  <DropdownTrigger>
+                    <div className="flex items-center gap-4 cursor-pointer">
+                      <Avatar name={session.user?.name || ""} />
+                      <h4 className="font-bold">{session.user?.name || ""}</h4>
+                    </div>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="Static Actions">
+                    <DropdownItem key="profile">Profile</DropdownItem>
+                    <DropdownItem
+                      key="logout"
+                      className="text-danger"
+                      color="danger"
+                      onClick={async () =>
+                        await signOut({ callbackUrl: "/login" })
+                      }
+                    >
+                      Déconnexion
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : (
+                <Button
+                  as={Link}
+                  color="secondary"
+                  href="/signIn"
+                  variant="solid"
                 >
-                  Delete file
-                </DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          ) : (
-            <Button as={Link} color="secondary" href="/signIn" variant="solid">
-              Connexion
-            </Button>
+                  Connexion
+                </Button>
+              )}
+            </div>
           )}
         </NavbarItem>
       </NavbarContent>

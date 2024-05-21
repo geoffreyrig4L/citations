@@ -7,6 +7,7 @@ import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import QueryProvider from "./queries";
 import NextauthProvider from "./nextAuthProvider";
+import { Divider } from "@nextui-org/react";
 
 export const metadata: Metadata = {
   title: {
@@ -28,10 +29,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-  session,
 }: {
   children: React.ReactNode;
-  session: any;
 }) {
   return (
     <html suppressHydrationWarning lang="en">
@@ -43,10 +42,11 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <NextauthProvider session={session}>
+          <NextauthProvider>
             <QueryProvider>
               <div className="relative flex flex-col h-screen">
                 <Navbar />
+                <Divider />
                 <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
                   {children}
                 </main>
