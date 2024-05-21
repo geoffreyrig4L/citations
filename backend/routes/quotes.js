@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/all", async (req, res) => {
   try {
-    const quote = await getAllQuote();
+    const quote = await getAllQuote(req.query?.sortBy);
     res.status(200).send(quote);
   } catch (error) {
     res.status(400).send(error.message);
