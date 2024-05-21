@@ -1,0 +1,12 @@
+-- CreateTable
+CREATE TABLE "Quote" (
+    "id" SERIAL NOT NULL,
+    "quote" VARCHAR(255) NOT NULL,
+    "author" VARCHAR(255) NOT NULL,
+    "like" INTEGER NOT NULL DEFAULT 0,
+    "disLike" INTEGER NOT NULL DEFAULT 0,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Quote_pkey" PRIMARY KEY ("id")
+);
