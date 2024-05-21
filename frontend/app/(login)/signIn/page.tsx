@@ -4,6 +4,8 @@ import { Card, CardBody } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import { Link } from "@nextui-org/link";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Forms = {
   username: string;
@@ -11,8 +13,17 @@ type Forms = {
 
 const SignInPage = () => {
   const { register, handleSubmit } = useForm<Forms>();
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<Forms> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Forms> = (data) =>
+    signIn("credentials", {
+      username: data.username,
+      redirect: false,
+    }).then(async ({ ok }: any) => {
+      if (ok) {
+        router.push("/");
+      }
+    });
 
   return (
     <div className="w-full h-full flex items-center justify-center">

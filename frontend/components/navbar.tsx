@@ -1,5 +1,4 @@
-import { Input } from "@nextui-org/input";
-import { Kbd } from "@nextui-org/kbd";
+"use client";
 import {
   NavbarBrand,
   NavbarContent,
@@ -8,14 +7,25 @@ import {
   Navbar as NextUINavbar,
 } from "@nextui-org/navbar";
 import NextLink from "next/link";
-
-import { Logo, SearchIcon } from "@/components/icons";
+import { Logo } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { Button } from "@nextui-org/button";
-import { Divider } from "@nextui-org/react";
+import {
+  Avatar,
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export const Navbar = () => {
+  const { data: session } = useSession();
+
+  console.log(session);
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -33,9 +43,32 @@ export const Navbar = () => {
         </NavbarItem>
         <Divider orientation="vertical" />
         <NavbarItem>
-          <Button as={Link} color="secondary" href="/signIn" variant="solid">
-            Connexion
-          </Button>
+          {session ? (
+            <Dropdown>
+              <DropdownTrigger>
+                <Avatar
+                  className="cursor-pointer"
+                  name={session.user?.name || ""}
+                />
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem key="new">New file</DropdownItem>
+                <DropdownItem key="copy">Copy link</DropdownItem>
+                <DropdownItem key="edit">Edit file</DropdownItem>
+                <DropdownItem
+                  key="delete"
+                  className="text-danger"
+                  color="danger"
+                >
+                  Delete file
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          ) : (
+            <Button as={Link} color="secondary" href="/signIn" variant="solid">
+              Connexion
+            </Button>
+          )}
         </NavbarItem>
       </NavbarContent>
 
