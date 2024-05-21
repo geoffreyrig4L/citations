@@ -1,8 +1,8 @@
-const express = require("express");
+import express from "express";
 const app = express();
 const port = 3030;
 
-const quotes = require("./routes/quotes");
+import quotes from "./routes/quotes.js";
 //const user = require("./routes/users");
 
 app.use(express.json());

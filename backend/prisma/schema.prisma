@@ -12,3 +12,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Quote {
+  id        Int       @id @default(autoincrement())
+  quote     String    @db.VarChar(255)
+  author    String    @db.VarChar(255)
+  like      Int       @default(0)
+  disLike   Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
+}
