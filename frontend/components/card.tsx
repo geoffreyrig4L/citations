@@ -1,16 +1,15 @@
 "use client";
 import { FcLikePlaceholder } from "react-icons/fc";
 import { IoHeartDislike } from "react-icons/io5";
-
-import { useEffect, useState } from "react";
 import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
   Avatar,
   Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
 } from "@nextui-org/react";
+import { useState } from "react";
 
 const Quote = () => {
   enum LikeStatus {
@@ -77,12 +76,6 @@ const Quote = () => {
             Frontend developer and UI/UX enthusiast. Join me on this coding
             adventure!
           </p>
-          {/* <span className="pt-2">
-            #FrontendWithZoey
-            <span className="py-2" aria-label="computer" role="img">
-              💻
-            </span>
-          </span> */}
         </CardBody>
         <CardFooter className="gap-3">
           <div className="flex gap-1">

@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
   provider = "prisma-client-js"
@@ -17,8 +12,40 @@ model Quote {
   id        Int       @id @default(autoincrement())
   quote     String    @db.VarChar(255)
   author    String    @db.VarChar(255)
-  like      Int       @default(0)
-  disLike   Int       @default(0)
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  like      Like[]    @relation("LikeToQuote")   
+  dislike   Dislike[] @relation("DislikeToQuote")    
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  quotes    Quote[]
+  like      Like[]    @relation("LikeToUser")   
+  dislike   Dislike[] @relation("DislikeToUser")   
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
+}
+
+model Like {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  quoteId   Int
+  user      User     @relation("LikeToUser", fields: [userId], references: [id])
+  quote     Quote     @relation("LikeToQuote", fields: [quoteId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt @default(now())
+}
+
+model Dislike {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  quoteId   Int
+  user      User     @relation("DislikeToUser", fields: [userId], references: [id])
+  quote     Quote     @relation("DislikeToQuote", fields: [quoteId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt @default(now())
 }
