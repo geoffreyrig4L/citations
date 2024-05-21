@@ -7,11 +7,47 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Input,
+  Textarea,
 } from "@nextui-org/react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaPen } from "react-icons/fa";
 
-const CreateQuote = ({ status, session }: any) => {
+type Forms = {
+  author: string;
+  quote: string;
+};
+
+const createQuote = async (quote: any) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/quote`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      author: quote.author,
+      quote: quote.quote,
+      userId: quote.userId,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`${response.status}`);
+  }
+
+  const data = await response.json();
+
+  return data;
+};
+
+const CreateQuote = ({ status, session, refetch }: any) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { register, handleSubmit } = useForm<Forms>();
+
+  const onSubmit: SubmitHandler<Forms> = (data) =>
+    createQuote({ ...data, userId: session.id }).then((res) => {
+      refetch();
+    });
 
   return (
     <>
@@ -24,41 +60,45 @@ const CreateQuote = ({ status, session }: any) => {
       >
         Créer un citation
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <Modal
+        backdrop={"blur"}
+        isDismissable={false}
+        isOpen={isOpen}
+        size={"xl"}
+        onOpenChange={onOpenChange}
+      >
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
-                Modal Title
-              </ModalHeader>
-              <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
+              <form
+                className="flex flex-col gap-4"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <ModalHeader className="flex flex-col gap-1">
+                  Créer une citation
+                </ModalHeader>
+                <ModalBody>
+                  <Input
+                    label="Auteur"
+                    placeholder="Auteur de la citation"
+                    type="text"
+                    {...register("author", { required: true })}
+                  />
+                  <Textarea
+                    label="Citation"
+                    placeholder="Ecrivez la citation"
+                    {...register("quote", { required: true })}
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Annuler
+                  </Button>
+                  <Button type="submit" color="secondary" onPress={onClose}>
+                    Créer
+                  </Button>
+                </ModalFooter>
+              </form>
             </>
           )}
         </ModalContent>
