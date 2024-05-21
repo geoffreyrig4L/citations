@@ -2,8 +2,8 @@
 import Quote from "@/components/card";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Select, SelectItem, Spinner } from "@nextui-org/react";
-import { FaPen } from "react-icons/fa";
 import { useSession } from "next-auth/react";
+import CreateQuote from "@/components/modalCreateQuote";
 
 export default function Home() {
   const { status } = useSession();
@@ -58,14 +58,7 @@ export default function Home() {
           </Select>
         </div>
         <div>
-          <Button
-            color="secondary"
-            isDisabled={status != "authenticated"}
-            startContent={<FaPen />}
-            variant="bordered"
-          >
-            Créer un citation
-          </Button>
+          <CreateQuote status={status} />
         </div>
       </div>
 

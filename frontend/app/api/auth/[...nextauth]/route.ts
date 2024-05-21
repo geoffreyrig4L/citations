@@ -45,9 +45,11 @@ export const authConfig: NextAuthOptions = {
         try {
           const data = await login(credentials);
 
+          const id = data.id;
+
           return {
-            id: data.userId,
             name: data.name,
+            id,
           };
         } catch (e: any) {
           if (e.message.match("fetch failed")) {
@@ -59,6 +61,22 @@ export const authConfig: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.id = token.id;
+      }
+
+      return session;
+    },
+  },
   pages: {
     signIn: "/signIn",
   },
