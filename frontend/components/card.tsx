@@ -1,4 +1,6 @@
 "use client";
+import { FcLikePlaceholder } from "react-icons/fc";
+import { IoHeartDislike } from "react-icons/io5";
 
 import { useState } from "react";
 import {
@@ -11,11 +13,12 @@ import {
 } from "@nextui-org/react";
 
 const Quote = () => {
-  const [isFollowed, setIsFollowed] = useState(false);
+  const [like, setLike] = useState(false);
+  const [dislike, setDislike] = useState(false);
 
   return (
     <div>
-      <Card className="max-w-[340px]">
+      <Card className="w-full">
         <CardHeader className="justify-between">
           <div className="flex gap-5">
             <Avatar
@@ -33,41 +36,55 @@ const Quote = () => {
               </h5>
             </div>
           </div>
-          <Button
-            className={
-              isFollowed
-                ? "bg-transparent text-foreground border-default-200"
-                : ""
-            }
-            color="primary"
-            radius="full"
-            size="sm"
-            variant={isFollowed ? "bordered" : "solid"}
-            onPress={() => setIsFollowed(!isFollowed)}
-          >
-            {isFollowed ? "Unfollow" : "Follow"}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              className={
+                like ? "bg-transparent text-foreground border-default-200" : ""
+              }
+              color="danger"
+              radius="full"
+              size="sm"
+              variant={like ? "bordered" : "solid"}
+              onPress={() => setLike(!like)}
+            >
+              <FcLikePlaceholder className="text-xl" />
+            </Button>
+            <Button
+              className={
+                dislike
+                  ? "bg-transparent text-foreground border-default-200"
+                  : ""
+              }
+              color="danger"
+              radius="full"
+              size="sm"
+              variant={dislike ? "bordered" : "solid"}
+              onPress={() => setDislike(!dislike)}
+            >
+              <IoHeartDislike className="text-xl" />
+            </Button>
+          </div>
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-400">
           <p>
             Frontend developer and UI/UX enthusiast. Join me on this coding
             adventure!
           </p>
-          <span className="pt-2">
+          {/* <span className="pt-2">
             #FrontendWithZoey
             <span className="py-2" aria-label="computer" role="img">
               💻
             </span>
-          </span>
+          </span> */}
         </CardBody>
         <CardFooter className="gap-3">
           <div className="flex gap-1">
             <p className="font-semibold text-default-400 text-small">4</p>
-            <p className=" text-default-400 text-small">Following</p>
+            <p className=" text-default-400 text-small">Like</p>
           </div>
           <div className="flex gap-1">
             <p className="font-semibold text-default-400 text-small">97.1K</p>
-            <p className="text-default-400 text-small">Followers</p>
+            <p className="text-default-400 text-small">Dislike</p>
           </div>
         </CardFooter>
       </Card>
