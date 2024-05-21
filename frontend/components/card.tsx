@@ -1,8 +1,5 @@
 "use client";
-import { FcLikePlaceholder } from "react-icons/fc";
-import { IoHeartDislike } from "react-icons/io5";
 import {
-  Avatar,
   Button,
   Card,
   CardBody,
@@ -10,8 +7,11 @@ import {
   CardHeader,
 } from "@nextui-org/react";
 import { useState } from "react";
+import { FcLikePlaceholder } from "react-icons/fc";
+import { RiDislikeLine } from "react-icons/ri";
+import { title } from "./primitives";
 
-const Quote = () => {
+const Quote = ({ quote }: any) => {
   enum LikeStatus {
     Liked = "LIKED",
     Disliked = "DISLIKED",
@@ -20,23 +20,19 @@ const Quote = () => {
 
   const [like, setLike] = useState<LikeStatus>(LikeStatus.Default);
 
+  console.log(quote);
+
   return (
     <div>
       <Card className="w-full">
         <CardHeader className="justify-between">
           <div className="flex gap-5">
-            <Avatar
-              isBordered
-              radius="full"
-              size="md"
-              src="https://nextui.org/avatars/avatar-1.png"
-            />
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4 className="text-small font-semibold leading-none text-default-600">
-                Zoey Lang
+                {quote.author}
               </h4>
               <h5 className="text-small tracking-tight text-default-400">
-                @zoeylang
+                posté par {quote.user.name}
               </h5>
             </div>
           </div>
@@ -67,24 +63,34 @@ const Quote = () => {
                   : setLike(LikeStatus.Disliked)
               }
             >
-              <IoHeartDislike className="text-xl" />
+              <RiDislikeLine className="text-xl" />
             </Button>
           </div>
         </CardHeader>
         <CardBody className="px-3 py-0 text-small">
-          <p>
-            Frontend developer and UI/UX enthusiast. Join me on this coding
-            adventure!
-          </p>
+          <h4 className={title({ color: "violet", size: "xs" })}>
+            {quote.quote}
+          </h4>
         </CardBody>
-        <CardFooter className="gap-3">
-          <div className="flex gap-1">
-            <p className="font-semibold text-small">4</p>
-            <p className=" text-small">Like</p>
+        <CardFooter className="gap-3 flex justify-between">
+          <div className="flex gap-3">
+            <div className="flex gap-1">
+              <p className="font-semibold text-small">
+                {quote.like?.length ?? 0}
+              </p>
+              <p className=" text-small">Like</p>
+            </div>
+            <div className="flex gap-1">
+              <p className="font-semibold text-small">
+                {quote.dislike?.length ?? 0}
+              </p>
+              <p className="text-small">Dislike</p>
+            </div>
           </div>
           <div className="flex gap-1">
-            <p className="font-semibold text-small">97.1K</p>
-            <p className="text-small">Dislike</p>
+            <p className="text-small tracking-tight text-default-400 ">
+              {quote.createdAt}
+            </p>
           </div>
         </CardFooter>
       </Card>
