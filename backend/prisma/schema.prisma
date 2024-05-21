@@ -13,7 +13,7 @@ model Quote {
   quote     String    @db.VarChar(255)
   author    String    @db.VarChar(255)
   userId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation("QuotesByUser", fields: [userId], references: [id])
   like      Like[]    @relation("LikeToQuote")   
   dislike   Dislike[] @relation("DislikeToQuote")    
   createdAt DateTime  @default(now())
@@ -22,12 +22,13 @@ model Quote {
 
 model User {
   id            Int       @id @default(autoincrement())
-  name          String    @unique
-  quotes        Quote[]
+  username      String    @unique
+  name          String
+  quotes        Quote[]   @relation("QuotesByUser")
   like          Like[]    @relation("LikeToUser")   
   dislike       Dislike[] @relation("DislikeToUser")  
   approvement   Approved[] @relation("approvementByUser")
-  approved      Approved[] @relation("approvedToUser")    
+  approved      Approved[] @relation("approvedToUser")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt @default(now())
 }

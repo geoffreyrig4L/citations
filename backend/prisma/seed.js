@@ -5,6 +5,7 @@ async function main() {
   for (let i = 0; i < 20; i++) {
     await prisma.user.create({
       data: {
+        username: faker.internet.userName(),
         name: faker.person.fullName(),
         quotes: {
           create: {

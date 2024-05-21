@@ -1,5 +1,5 @@
 import express from "express";
-import { signIn, signUp } from "../actions/user.js";
+import { getUser, signIn, signUp } from "../actions/user.js";
 const router = express.Router();
 
 // users
@@ -15,7 +15,7 @@ router.post("/signin", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   try {
-    const user = await signUp(req.body?.username);
+    const user = await signUp(req.body?.username, req.body?.name);
     res.status(200).send(user);
   } catch (error) {
     if (error.message.match("Unique constraint")) {
@@ -23,6 +23,15 @@ router.post("/signup", async (req, res) => {
     } else {
       res.status(400).send(error.message);
     }
+  }
+});
+
+router.get("/:username", async (req, res) => {
+  try {
+    const user = await getUser(req.params.username);
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(400).send(error.message);
   }
 });
 

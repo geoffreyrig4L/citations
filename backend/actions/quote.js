@@ -10,7 +10,11 @@ export const getAllQuote = async (sortBy) => {
 
   const quotes = await prisma.quote.findMany({
     orderBy: { ...orderBy },
-    include: { dislike: true, like: true, user: true },
+    include: {
+      dislike: true,
+      like: true,
+      user: { include: { approved: true } },
+    },
   });
 
   if (quotes.length == 0) {
@@ -23,7 +27,11 @@ export const getAllQuote = async (sortBy) => {
 export const getQuote = async (id) => {
   const quote = await prisma.quote.findUnique({
     where: { id: id },
-    include: { dislike: true, like: true, user: true },
+    include: {
+      dislike: true,
+      like: true,
+      user: { include: { approved: true } },
+    },
   });
 
   if (!quote) {
