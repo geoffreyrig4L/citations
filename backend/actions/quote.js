@@ -1,7 +1,9 @@
 import prisma from "../prisma/prisma.js";
 
 export const getAllQuote = async () => {
-  const quotes = await prisma.quote.findMany();
+  const quotes = await prisma.quote.findMany({
+    include: { dislike: true, like: true, user: true },
+  });
 
   if (quotes.length == 0) {
     sendError();
@@ -11,7 +13,10 @@ export const getAllQuote = async () => {
 };
 
 export const getQuote = async (id) => {
-  const quote = await prisma.quote.findUnique({ where: { id: id } });
+  const quote = await prisma.quote.findUnique({
+    where: { id: id },
+    include: { dislike: true, like: true, user: true },
+  });
 
   if (!quote) {
     sendError();
