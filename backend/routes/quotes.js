@@ -1,10 +1,12 @@
-const express = require("express");
+import express from "express";
+import { getAllQuote } from "../actions/quote.js";
 const router = express.Router();
 
 // quotes
 
-router.get("/all", (req, res) => {
-  res.send("get quotes");
+router.get("/all", async (req, res) => {
+  const quotes = await getAllQuote();
+  res.status(200).send(quotes);
 });
 
 router.get("/:idQuote", (req, res) => {
@@ -23,4 +25,4 @@ router.delete("/:idQuote", (req, res) => {
   res.send("delete quote");
 });
 
-module.exports = router;
+export default router;
