@@ -59,10 +59,10 @@ export default function Home() {
               Les plus récentes
             </SelectItem>
             <SelectItem key={"like"} value={"like"}>
-              les plus Like
+              les plus populaire
             </SelectItem>
             <SelectItem key={"disLike"} value={"disLike"}>
-              les plus Dislike
+              les moins populaire
             </SelectItem>
           </Select>
         </div>
@@ -75,7 +75,7 @@ export default function Home() {
         <ul className="flex flex-col gap-4">
           {data.map((quote: any) => (
             <li key={quote.id}>
-              <Quote quote={quote} />
+              <Quote quote={quote} session={session} />
             </li>
           ))}
         </ul>

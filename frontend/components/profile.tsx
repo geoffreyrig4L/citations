@@ -53,6 +53,16 @@ const Profile = ({ username }: { username: string }) => {
     });
   };
 
+  const quotesCounts = data?.quotes?.reduce(
+    (acc: { totalLikes: number; totalDislikes: number }, quote: any) => {
+      acc.totalLikes += quote.like.length;
+      acc.totalDislikes += quote.dislike.length;
+
+      return acc;
+    },
+    { totalLikes: 0, totalDislikes: 0 }
+  );
+
   return (
     <Card>
       <CardHeader className="flex justify-between items-center">
@@ -95,9 +105,9 @@ const Profile = ({ username }: { username: string }) => {
         </div>
         <div className="flex flex-col gap-2 items-center">
           <div className="flex gap-4">
-            <p className="text-danger">{`${data?.like?.length || ""} j'aime`}</p>
+            <p className="text-danger">{`${quotesCounts?.totalLikes} j'aime`}</p>
             <Divider orientation="vertical" />
-            <p>{`${data?.dislike?.length || ""} j'aime pas`}</p>
+            <p>{`${quotesCounts?.totalDislikes} j'aime pas`}</p>
           </div>
           <div className="flex items-center justify-center gap-2">
             <p>{`Approuvé par ${data?.approved?.length} utilisateur`}</p>

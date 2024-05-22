@@ -15,7 +15,7 @@ export enum LikeStatus {
   Default = "NEUTRAL",
 }
 
-const Quote = ({ quote, isInProfile, isMyProfile, refetch }: any) => {
+const Quote = ({ quote, isInProfile, isMyProfile, refetch, session }: any) => {
   const [likeStatus, setLikeStatus] = useState<LikeStatus>(LikeStatus.Default);
   const [likes, setLikes] = useState<number>(quote.like?.length ?? 0);
   const [dislikes, setDislikes] = useState<number>(quote.dislike?.length ?? 0);
@@ -43,18 +43,20 @@ const Quote = ({ quote, isInProfile, isMyProfile, refetch }: any) => {
                 username={quote?.user?.username}
               />
             </div>
-            <div className="flex items-center gap-2">
-              <Like
-                likeStatus={likeStatus}
-                setLikeStatus={setLikeStatus}
-                quote={quote}
-              />
-              <Dislike
-                likeStatus={likeStatus}
-                setLikeStatus={setLikeStatus}
-                quote={quote}
-              />
-            </div>
+            {session && (
+              <div className="flex items-center gap-2">
+                <Like
+                  likeStatus={likeStatus}
+                  setLikeStatus={setLikeStatus}
+                  quote={quote}
+                />
+                <Dislike
+                  likeStatus={likeStatus}
+                  setLikeStatus={setLikeStatus}
+                  quote={quote}
+                />
+              </div>
+            )}
           </CardHeader>
         ) : (
           isMyProfile && (
