@@ -17,7 +17,10 @@ export const signUp = async (username, name) => {
 export const getUser = async (username) => {
   const user = await prisma.user.findUnique({
     where: { username: username },
-    include: { approved: true, like: true, dislike: true, quotes: true },
+    include: {
+      approved: true,
+      quotes: { include: { like: true, dislike: true } },
+    },
   });
 
   if (!user) {
