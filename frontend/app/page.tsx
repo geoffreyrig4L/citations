@@ -59,10 +59,10 @@ export default function Home() {
               Les plus récentes
             </SelectItem>
             <SelectItem key={"like"} value={"like"}>
-              les plus populaire
+              les plus aimées
             </SelectItem>
             <SelectItem key={"disLike"} value={"disLike"}>
-              les moins populaire
+              les plus controversées
             </SelectItem>
           </Select>
         </div>

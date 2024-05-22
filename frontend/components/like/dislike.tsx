@@ -5,7 +5,7 @@ import { DateTime } from "luxon";
 import { useSession } from "next-auth/react";
 import { BiDislike } from "react-icons/bi";
 import { LikeStatus } from "../card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Dislike = ({ likeStatus, setLikeStatus, quote }: any) => {
   const { data: session } = useSession();
@@ -37,13 +37,15 @@ const Dislike = ({ likeStatus, setLikeStatus, quote }: any) => {
     }
   }
 
-  const defaultValue = quote?.dislike.some(
-    (dislike: any) => dislike.userId === session?.id
-  );
+  useEffect(() => {
+    const defaultValue = quote?.dislike.some(
+      (dislike: any) => dislike.userId === session?.id
+    );
 
-  if (defaultValue) {
-    setLikeStatus(LikeStatus.Disliked);
-  }
+    if (defaultValue) {
+      setLikeStatus(LikeStatus.Disliked);
+    }
+  }, []);
 
   return (
     <Button

@@ -3,7 +3,7 @@
 import { Button } from "@nextui-org/react";
 import { DateTime } from "luxon";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiLike } from "react-icons/bi";
 import { LikeStatus } from "../card";
 
@@ -37,13 +37,15 @@ const Like = ({ likeStatus, setLikeStatus, quote }: any) => {
     }
   }
 
-  const defaultValue = quote.like.some(
-    (like: any) => like.userId === session?.id
-  );
+  useEffect(() => {
+    const defaultValue = quote.like.some(
+      (like: any) => like.userId === session?.id
+    );
 
-  if (defaultValue) {
-    setLikeStatus(LikeStatus.Liked);
-  }
+    if (defaultValue) {
+      setLikeStatus(LikeStatus.Liked);
+    }
+  }, []);
 
   return (
     <Button
