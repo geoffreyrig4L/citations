@@ -8,10 +8,16 @@ async function main() {
         username: faker.internet.userName(),
         name: faker.person.fullName(),
         quotes: {
-          create: {
-            quote: faker.lorem.sentence(),
-            author: faker.person.fullName(),
-          },
+          create: [
+            {
+              quote: faker.lorem.sentence(),
+              author: faker.person.fullName(),
+            },
+            {
+              quote: faker.lorem.sentence(),
+              author: faker.person.fullName(),
+            },
+          ],
         },
       },
     });
@@ -37,6 +43,20 @@ async function main() {
       data: {
         userId: user.id,
         quoteId: quote.id,
+      },
+    });
+  }
+
+  for (let i = 0; i < 120; i++) {
+    const user = await getRandomUser();
+    const user2 = await getRandomUser();
+
+    console.log(user2);
+
+    await prisma.approved.create({
+      data: {
+        userId: user.id,
+        approvedById: user2.id,
       },
     });
   }
